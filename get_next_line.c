@@ -6,7 +6,7 @@
 /*   By: abegou <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 18:41:46 by abegou            #+#    #+#             */
-/*   Updated: 2025/11/24 19:36:16 by abegou           ###   ########.fr       */
+/*   Updated: 2025/11/24 21:54:34 by abegou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char *get_next_line(int fd)
 	while (read_res >= 0)
 	{
 		if (read_res < BUFFER_SIZE)
-		ft_strchr(buffer, '\n') ft_strchr(buffer, '\0')
+			ft_strchr(buffer, '\n') ft_strchr(buffer, '\0')
 //		join jusquau \n dans stash
 	}
 	return (mangeur2merde);
