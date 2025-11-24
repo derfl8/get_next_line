@@ -6,34 +6,40 @@
 /*   By: abegou <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 13:21:10 by abegou            #+#    #+#             */
-/*   Updated: 2025/11/20 13:25:40 by abegou           ###   ########.fr       */
+/*   Updated: 2025/11/24 19:56:58 by abegou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+size_t	ft_strlen(const char *s)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
+}
+
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*ret;
-	size_t	j;
-	size_t	ls1;
-	size_t	ls2;
+	int		j;
 
 	if (!s1 || !s2)
 		return (NULL);
-	ls1 = ft_strlen(s1);
-	ls2 = ft_strlen(s2);
-	ret = malloc(sizeof(char) * (ls1 + ls2 + 1));
+	ret = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (ret == NULL)
 		return (NULL);
-	ft_strlcpy(ret, s1, ls1 + 1);
-	j = 0;
-	while (j < ls2)
-	{
-		ret[ls1 + j] = s2[j];
-		j++;
-	}
-	ret[ls1 + j] = '\0';
+	j = -1;
+	while (s1[++j])
+		ret[j] = s1[j];
+	ret[j] = '\0';
+	j = -1;
+	while (s2[++j])
+		ret[ft_strlen(s1) + j] = s2[j];
+	ret[ft_strlen(s1) + j] = '\0';
 	return (ret);
 }
 
@@ -62,7 +68,10 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 
 char	*ft_strchr(const char *s, int c)
 {
-	size_t	i;
+	size_t			i;
+	void			*ptr;
+	unsigned char	*str;
+	size_t			i;
 
 	i = 0;
 	while (s[i])
@@ -74,16 +83,18 @@ char	*ft_strchr(const char *s, int c)
 	if (s[i] == (char)c)
 		return ((char *)&s[i]);
 	return (NULL);
-	
+}
+
 void	*ft_calloc(size_t nmemb, size_t size)
 {
-	void	*ptr;
-
 	if (size != 0 && nmemb != 0 && (nmemb * size) / size != nmemb)
 		return (NULL);
 	ptr = malloc(nmemb * size);
 	if (!ptr)
 		return (NULL);
-	ft_bzero(ptr, size * nmemb);
+	str = (unsigned char *)ptdr;
+	i = 0;
+	while (i < (nmemb * size))
+		str[i++] = '\0' return (ptr);
 	return (ptr);
 }
