@@ -6,7 +6,7 @@
 /*   By: abegou <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 13:21:10 by abegou            #+#    #+#             */
-/*   Updated: 2025/11/24 19:56:58 by abegou           ###   ########.fr       */
+/*   Updated: 2025/11/25 18:27:26 by abegou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 size_t	ft_strlen(const char *s)
 {
 	size_t	i;
-	
+
 	if (!s)
 		return (0);
 	i = 0;
@@ -56,7 +56,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		return (NULL);
 	s_len = ft_strlen(s);
 	if (start >= s_len)
-		return (ft_strdup(""));
+		return (ft_calloc(1, 1));
 	if (len > s_len - start)
 		len = s_len - start;
 	new = malloc(sizeof(char) * (len + 1));
@@ -71,7 +71,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 char	*ft_strchr(const char *s, int c)
 {
 	size_t	i;
-	
+
 	if (!s)
 		return (NULL);
 	i = 0;
@@ -89,9 +89,9 @@ char	*ft_strchr(const char *s, int c)
 void	*ft_calloc(size_t nmemb, size_t size)
 {
 	void			*ptr;
-	unsigned char	*str
+	unsigned char	*str;
 	size_t			i;
-	
+
 	if (size != 0 && nmemb != 0 && (nmemb * size) / size != nmemb)
 		return (NULL);
 	ptr = malloc(nmemb * size);
