@@ -24,25 +24,3 @@ char	*get_next_line(int fd)
 	read_res = read(fd, buffer, BUFFER_SIZE);
 	return (buffer);
 }
-/*
-#include <stdio.h>
-
-int	main(int argc, char **argv)
-{
-	int		fd;
-	char	*line;
-
-	(void)argc;
-	fd = open(argv[1], O_RDONLY);
-	line = "";
-	do 
-	{
-		line = get_next_line(fd);
-		printf("%s", line);
-		if (line)
-			free (line);
-	}
-	while(line != NULL);
-	fd = close(fd);
-	return (0);
-}*/
