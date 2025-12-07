@@ -6,12 +6,14 @@
 /*   By: abegou <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 22:12:03 by abegou            #+#    #+#             */
-/*   Updated: 2025/11/25 15:24:29 by abegou           ###   ########.fr       */
+/*   Updated: 2025/11/26 17:26:59 by abegou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
+//# ifndef BUFFFER_SIZE
+//#  define BUFFER_SIZE 42
 
 // libs
 # include <stdlib.h>
