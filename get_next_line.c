@@ -6,11 +6,30 @@
 /*   By: abegou <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 18:41:46 by abegou            #+#    #+#             */
-/*   Updated: 2025/12/10 09:12:55 by abegou           ###   ########.fr       */
+/*   Updated: 2025/12/10 11:32:40 by abegou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+char	*update_stash(char *stash)
+{
+	char	*new_stash;
+	char	*pos;
+	size_t	len;
+
+	len = 0;
+	pos = ft_strchr(stash, '\n');
+	if (pos)
+	{
+		len = pos - stash + 1;
+		new_stash = ft_substr(stash, 0, len);
+		free(stash);
+		return (new_stash);
+	}
+	free(stash);
+	return (NULL);
+}
 
 char	*extract_line(char *stash)
 {
@@ -24,12 +43,15 @@ char	*extract_line(char *stash)
 		len = new_line - stash + 1;
 		new_line = ft_substr(stash, 0, len);
 	}
+	else
+		new_line = ft_substr(stash, 0, ft_strlen(stash));
 	return (new_line);
 }
 
 char	*read_stash(int fd, char *stash)
 {
 	char	*buffer;
+	char	*temp;
 	int		read_res;
 
 	read_res = 1;
@@ -45,7 +67,9 @@ char	*read_stash(int fd, char *stash)
 			return (NULL);
 		}
 		buffer[read_res] = '\0';
+		temp = stash;
 		stash = ft_strjoin(stash, buffer);
+		free(temp);
 		if (ft_strchr(stash, '\n'))
 			break ;
 	}
@@ -64,6 +88,6 @@ char	*get_next_line(int fd)
 	if (!stash || stash[0] == 0)
 		return (NULL);
 	line = extract_line(stash);
-//	stash = update_stash(stash);
-	return (stash);
+	stash = update_stash(stash);
+	return (line);
 }
