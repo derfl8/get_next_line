@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abegou <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 18:41:46 by abegou            #+#    #+#             */
-/*   Updated: 2025/12/16 19:55:24 by abegou           ###   ########.fr       */
+/*   Updated: 2025/12/16 16:23:47 by abegou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 char	*update_stash(char *stash)
 {
@@ -48,19 +48,10 @@ char	*extract_line(char *stash)
 	return (new_line);
 }
 
-char	*join_stash(char *stash, char *buffer)
-{
-	char	*temp;
-
-	temp = stash;
-	stash = ft_strjoin(stash, buffer);
-	free(temp);
-	return (stash);
-}
-
 char	*read_stash(int fd, char *stash)
 {
 	char	*buffer;
+	char	*temp;
 	int		read_res;
 
 	read_res = 1;
@@ -70,7 +61,7 @@ char	*read_stash(int fd, char *stash)
 		free(stash);
 		return (NULL);
 	}
-	while (read_res > 0 && !ft_strchr(stash, '\n'))
+	while (read_res > 0)
 	{
 		read_res = read(fd, buffer, BUFFER_SIZE);
 		if (read_res == -1)
@@ -80,12 +71,17 @@ char	*read_stash(int fd, char *stash)
 			return (NULL);
 		}
 		buffer[read_res] = '\0';
-		stash = join_stash(stash, buffer);
+		temp = stash;
+		stash = ft_strjoin(stash, buffer);
 		if (!stash)
 		{
+			free(temp);
 			free(buffer);
 			return (NULL);
 		}
+		free(temp);
+		if (ft_strchr(stash, '\n'))
+			break ;
 	}
 	free(buffer);
 	return (stash);
@@ -93,19 +89,19 @@ char	*read_stash(int fd, char *stash)
 
 char	*get_next_line(int fd)
 {
-	static char	*stash;
+	static char	*stash[1024];
 	char		*line;
 
 	if (fd < 0 || fd > 1024 || BUFFER_SIZE <= 0)
 		return (NULL);
-	stash = read_stash(fd, stash);
-	if (!stash || stash[0] == 0)
+	stash[fd] = read_stash(fd, stash[fd]);
+	if (!stash[fd] || stash[fd][0] == 0)
 	{
-		free(stash);
-		stash = NULL;
+		free(stash[fd]);
+		stash[fd] = NULL;
 		return (NULL);
 	}
-	line = extract_line(stash);
-	stash = update_stash(stash);
+	line = extract_line(stash[fd]);
+	stash[fd] = update_stash(stash[fd]);
 	return (line);
 }
