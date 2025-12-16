@@ -6,7 +6,7 @@
 /*   By: abegou <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 18:41:46 by abegou            #+#    #+#             */
-/*   Updated: 2025/12/16 19:55:24 by abegou           ###   ########.fr       */
+/*   Updated: 2025/12/16 20:12:51 by abegou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,18 +58,11 @@ char	*join_stash(char *stash, char *buffer)
 	return (stash);
 }
 
-char	*read_stash(int fd, char *stash)
+char	*read_stash(int fd, char *stash, char *buffer)
 {
-	char	*buffer;
 	int		read_res;
 
 	read_res = 1;
-	buffer = ft_calloc(sizeof(char), (size_t)BUFFER_SIZE + 1);
-	if (!buffer)
-	{
-		free(stash);
-		return (NULL);
-	}
 	while (read_res > 0 && !ft_strchr(stash, '\n'))
 	{
 		read_res = read(fd, buffer, BUFFER_SIZE);
@@ -95,10 +88,18 @@ char	*get_next_line(int fd)
 {
 	static char	*stash;
 	char		*line;
+	char		*buffer;
 
 	if (fd < 0 || fd > 1024 || BUFFER_SIZE <= 0)
 		return (NULL);
-	stash = read_stash(fd, stash);
+	buffer = ft_calloc(sizeof(char), (size_t)BUFFER_SIZE + 1);
+	if (!buffer)
+	{
+		if (stash)
+			free(stash);
+		return (NULL);
+	}
+	stash = read_stash(fd, stash, buffer);
 	if (!stash || stash[0] == 0)
 	{
 		free(stash);

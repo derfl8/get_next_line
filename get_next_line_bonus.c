@@ -6,7 +6,7 @@
 /*   By: abegou <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 18:41:46 by abegou            #+#    #+#             */
-/*   Updated: 2025/12/16 16:23:47 by abegou           ###   ########.fr       */
+/*   Updated: 2025/12/16 20:16:04 by abegou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,20 +48,22 @@ char	*extract_line(char *stash)
 	return (new_line);
 }
 
-char	*read_stash(int fd, char *stash)
+char	*join_stash(char *stash, char *buffer)
 {
-	char	*buffer;
 	char	*temp;
+
+	temp = stash;
+	stash = ft_strjoin(stash, buffer);
+	free(temp);
+	return (stash);
+}
+
+char	*read_stash(int fd, char *stash, char *buffer)
+{
 	int		read_res;
 
 	read_res = 1;
-	buffer = ft_calloc(sizeof(char), (size_t)BUFFER_SIZE + 1);
-	if (!buffer)
-	{
-		free(stash);
-		return (NULL);
-	}
-	while (read_res > 0)
+	while (read_res > 0 && !ft_strchr(stash, '\n'))
 	{
 		read_res = read(fd, buffer, BUFFER_SIZE);
 		if (read_res == -1)
@@ -71,17 +73,12 @@ char	*read_stash(int fd, char *stash)
 			return (NULL);
 		}
 		buffer[read_res] = '\0';
-		temp = stash;
-		stash = ft_strjoin(stash, buffer);
+		stash = join_stash(stash, buffer);
 		if (!stash)
 		{
-			free(temp);
 			free(buffer);
 			return (NULL);
 		}
-		free(temp);
-		if (ft_strchr(stash, '\n'))
-			break ;
 	}
 	free(buffer);
 	return (stash);
@@ -91,10 +88,18 @@ char	*get_next_line(int fd)
 {
 	static char	*stash[1024];
 	char		*line;
+	char		*buffer;
 
 	if (fd < 0 || fd > 1024 || BUFFER_SIZE <= 0)
 		return (NULL);
-	stash[fd] = read_stash(fd, stash[fd]);
+	buffer = ft_calloc(sizeof(char), (size_t)BUFFER_SIZE + 1);
+	if (!buffer)
+	{
+		if (stash[fd])
+			free(stash[fd]);
+		return (NULL);
+	}
+	stash[fd] = read_stash(fd, stash[fd], buffer);
 	if (!stash[fd] || stash[fd][0] == 0)
 	{
 		free(stash[fd]);
