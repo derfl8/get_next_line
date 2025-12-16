@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: abegou <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/20 13:21:10 by abegou            #+#    #+#             */
-/*   Updated: 2025/11/26 19:35:04 by abegou           ###   ########.fr       */
+/*   Updated: 2025/12/16 16:34:00 by abegou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 size_t	ft_strlen(const char *s)
 {
@@ -27,27 +27,25 @@ size_t	ft_strlen(const char *s)
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*ret;
-	size_t	j;
+	int		j;
+	int		i;
+	int		k;
 
+	i = ft_strlen(s1);
+	k = ft_strlen(s2);
 	if (!s1 && !s2)
 		return (NULL);
-	ret = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	ret = ft_calloc(sizeof(char), i + k + 1);
 	if (!ret)
 		return (NULL);
-	j = 0;
-	while (j < ft_strlen(s1))
-	{
+	j = -1;
+	while (++j < i)
 		ret[j] = s1[j];
-		j++;
-	}
 	ret[j] = '\0';
-	j = 0;
-	while (s2[j])
-	{
-		ret[ft_strlen(s1) + j] = s2[j];
-		j++;
-	}
-	ret[ft_strlen(s1) + j] = '\0';
+	j = -1;
+	while (s2[++j])
+		ret[i + j] = s2[j];
+	ret[i + j] = '\0';
 	return (ret);
 }
 
@@ -65,7 +63,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		return (ft_calloc(1, 1));
 	if (len > s_len - start)
 		len = s_len - start;
-	new = malloc(sizeof(char) * (len + 1));
+	new = ft_calloc(sizeof(char), (len + 1));
 	if (!new)
 		return (NULL);
 	while (i < len)

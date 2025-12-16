@@ -6,7 +6,7 @@
 /*   By: abegou <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 18:41:46 by abegou            #+#    #+#             */
-/*   Updated: 2025/12/11 11:31:13 by abegou           ###   ########.fr       */
+/*   Updated: 2025/12/16 16:25:31 by abegou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ char	*read_stash(int fd, char *stash)
 		stash = ft_strjoin(stash, buffer);
 		if (!stash)
 		{
-			free(stash);
+			free(temp);
 			free(buffer);
 			return (NULL);
 		}
@@ -92,21 +92,16 @@ char	*get_next_line(int fd)
 	static char	*stash;
 	char		*line;
 
-	if (fd < 0 || fd > 1023 || BUFFER_SIZE <= 0)
+	if (fd < 0 || fd > 1024 || BUFFER_SIZE <= 0)
 		return (NULL);
 	stash = read_stash(fd, stash);
-	if (!stash || stash[0] == 0)
-	{
-		free(stash);
-		return (NULL);
-	}
-	line = extract_line(stash);
-	stash = update_stash(stash);
 	if (!stash || stash[0] == 0)
 	{
 		free(stash);
 		stash = NULL;
 		return (NULL);
 	}
+	line = extract_line(stash);
+	stash = update_stash(stash);
 	return (line);
 }
